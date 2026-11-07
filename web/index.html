@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#37135e">
+<title>Double Bubble Show — бронирование праздника</title>
+<script src="https://telegram.org/js/telegram-web-app.js?64"></script>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;color:#281a43;background:#faf5ff}
+*{box-sizing:border-box}body{margin:0}main{max-width:760px;margin:auto;padding:0 16px 110px}
+header{position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,#45116c,#8f27bb 60%,#fc4eae);padding:36px 24px 44px;border-radius:0 0 28px 28px}
+header:after{content:'';position:absolute;right:-30px;top:-70px;width:240px;height:240px;border-radius:50%;border:20px solid #ffffff24;box-shadow:inset 0 0 70px #ffedfc50}
+.eyebrow{font-size:11px;letter-spacing:.2em;font-weight:800;opacity:.85}
+h1{font-size:36px;line-height:1;max-width:270px;margin:8px 0 12px;letter-spacing:-.04em}
+.sub{font-size:13px;line-height:1.5;max-width:290px;color:#f1d9fa}
+.bubble{width:70px;height:70px;border:2px solid #fff6;border-radius:50%;position:absolute;right:29px;bottom:28px;background:radial-gradient(circle at 30% 22%,#fff9,#ffdcf30d 43%,#36e1ff55 78%,#fff8)}
+section{background:white;border:1px solid #efe6f7;box-shadow:0 10px 30px #4b177411;border-radius:18px;padding:18px;margin-top:14px}
+h2{font-size:17px;letter-spacing:-.02em;margin:0 0 8px}.hint{color:#796e86;font-size:12px;line-height:1.5}
+.pill{display:inline-block;font-size:11px;color:#662e92;background:#f7ecff;padding:5px 9px;border-radius:100px;font-weight:700}
+.price{color:#45166f;font-size:29px;font-weight:900;letter-spacing:-.04em;margin:10px 0 0}.items{font-size:12px;line-height:1.85;padding-left:20px;color:#5e506c}
+.characters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.char{border:1px solid #ebe0f4;border-radius:14px;padding:10px;background:#fff;text-align:left;display:flex;flex-direction:column;gap:7px;cursor:pointer;color:inherit;font:inherit}
+.char.selected{outline:2px solid #9a2bc7;background:#fbf1ff}
+.char:disabled{opacity:.6;cursor:not-allowed}.char img{width:100%;aspect-ratio:5/4;object-fit:cover;border-radius:9px;background:#eee5fb}.no-image{aspect-ratio:5/4;display:grid;place-items:center;background:linear-gradient(135deg,#f2defc,#d9f4ff);font-size:33px;border-radius:9px}
+.char strong{font-size:13px}.char small{font-size:11px;color:#876c99}
+label{display:block;font-size:12px;font-weight:750;margin:15px 0 6px}
+input{display:block;width:100%;font:inherit;font-size:15px;border:1px solid #decde9;background:#fff;border-radius:11px;padding:12px;outline-color:#8b35bd}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.slots button{border:1px solid #e5d7ee;border-radius:10px;background:#faf6fc;color:#4a1e70;padding:12px 4px;font-weight:700;cursor:pointer}
+.slots button.active{background:#6c218f;color:white;border-color:#6c218f}.slots button.unavailable{opacity:.52;text-decoration:line-through;background:#eee;color:#776a80}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffee;backdrop-filter:blur(12px);border-top:1px solid #e8d9f1;padding:12px max(16px,calc((100vw - 760px)/2 + 16px));display:flex;align-items:center;gap:12px}
+.total{font-size:20px;color:#381453;font-weight:900;white-space:nowrap}.muted{color:#846a92;font-size:11px}
+button.primary{flex:1;border:0;background:linear-gradient(120deg,#741bae,#d132a8);border-radius:12px;color:white;font-weight:800;padding:16px 10px;cursor:pointer}button.primary:disabled{opacity:.45;cursor:not-allowed}
+.status{font-size:13px;line-height:1.55;padding:10px;border-radius:9px;background:#faf5fc;margin-top:12px}.status.error{background:#fff1f3;color:#ac294f}.status.success{background:#ebfff6;color:#126c49}
+small.info{font-size:11px;color:#836f92}
+</style>
+</head>
+<body>
+<main>
+<header><div class="eyebrow">ДЕТСКИЕ ПРАЗДНИКИ</div><h1>Double Bubble Show</h1><div class="sub">Выберите любимых героев, время и устройте праздник с пузырями, танцами и сюрпризами.</div><div class="bubble"></div></header>
+<section><span class="pill">60 минут · 2 героя включены</span><h2 style="margin-top:12px">Стандартная программа</h2><div class="price" id="basePrice">1 000 000 сум</div><ul class="items"><li>Два героя, диджей и аппаратура</li><li>Игры, танцы и конкурсы</li><li>Мыльные пузыри — сюрприз для детей</li><li>Фигурки из шариков каждому ребёнку</li><li>Реквизит и торжественный вынос торта</li></ul><div class="hint">Каждый дополнительный герой: <b id="extraPrice">350 000 сум</b>. Премиальные костюмы — по запросу.</div></section>
+<section><h2>1. Выберите персонажей</h2><div class="hint">Выберите минимум двух героев. Доступность рассчитывается на основе заказов CRM.</div><div class="characters" id="characters"></div><p class="hint" id="selectedCount">Выбрано: 0</p></section>
+<section><h2>2. Дата и время</h2><label for="date">Дата праздника</label><input type="date" id="date"><div class="hint" style="margin-top:10px">Время проверяется при выборе персонажей и повторно перед сохранением заявки. Время указано по Узбекистану (UTC+5).</div><div class="slots" id="slots"></div><div class="hint" id="slotsMessage">Выберите дату и хотя бы двух персонажей.</div></section>
+<section><h2>3. Контактные данные</h2><label for="name">Как к вам обращаться?</label><input id="name" maxlength="120" placeholder="Ваше имя" autocomplete="name"><label for="phone">Телефон</label><input id="phone" maxlength="30" inputmode="tel" placeholder="+998 90 123 45 67" autocomplete="tel"><label for="address">Адрес проведения праздника</label><input id="address" maxlength="500" placeholder="Город, улица, ориентир"><div class="hint" style="margin-top:10px">Это заявка с предварительно закреплённым временем. Менеджер подтвердит возможность проведения программы и назначит исполнителей.</div><div class="status" id="message" aria-live="polite">Загрузка каталога…</div></section>
+<section id="otherServices" hidden><h2>Другие услуги</h2><div id="serviceList"></div><p class="hint">Дополнительные шоу согласовываются отдельно с менеджером. Онлайн-бронирование пока действует только для стандартной программы.</p></section>
+</main>
+<div class="bottom"><div><div class="muted">Итого</div><div class="total" id="total">—</div></div><button id="submit" class="primary" disabled>Отправить заявку</button></div>
+<script>
+'use strict';
+// Replace with the EXACT deployed Supabase Edge Function URL (HTTPS).
+const API_URL = '__DBS_MINIAPP_API_URL__';
+const app = window.Telegram?.WebApp;
+app?.ready?.(); app?.expand?.();
+const $=id=>document.getElementById(id);
+const state={characters:[],services:[],selected:new Set(),slots:[],time:null,busy:false,requestId:crypto.randomUUID()};
+const money=n=>new Intl.NumberFormat('ru-RU').format(n)+' сум';
+const currentService=()=>state.services.find(x=>x.slug==='standard-60');
+function todayUz(){const parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Tashkent',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()); const v=Object.fromEntries(parts.map(p=>[p.type,p.value]));return `${v.year}-${v.month}-${v.day}`;}
+$('date').min=todayUz(); $('date').value=todayUz();
+function message(s,error=false){$('message').className='status'+(error?' error':'');$('message').textContent=s;}
+async function call(action,payload={}){
+  if (!app?.initData) throw new Error('Откройте приложение из Telegram-бота.');
+  if(API_URL.includes('__DBS_')) throw new Error('Адрес сервера Mini App ещё не настроен.');
+  const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,initData:app.initData,...payload})});
+  let data;try{data=await res.json()}catch{throw new Error('Нет ответа сервера.');}
+  if(!res.ok){
+    const labels={SLOT_BUSY:'Выбранное время уже занято. Выберите другое.',TELEGRAM_AUTH_EXPIRED:'Сессия Telegram устарела. Закройте приложение и откройте снова.',DBS_DAILY_LIMIT:'Достигнут лимит заявок. Свяжитесь с менеджером.',DBS_INVALID_CONTACT:'Проверьте имя, телефон и адрес.',DBS_PACKAGE_UNAVAILABLE:'Программа сейчас недоступна.',CATALOG_UNAVAILABLE:'Каталог недоступен. Попробуйте позже.',SLOTS_UNAVAILABLE:'Не удалось проверить календарь. Попробуйте позже.'};
+    throw new Error(labels[data.error]||'Ошибка сервера: '+String(data.error||res.status));
+  }
+  return data;
+}
+function render(){
+  const container=$('characters');container.replaceChildren();
+  for(const c of state.characters){
+    const b=document.createElement('button');b.type='button';b.className='char'+(state.selected.has(c.id)?' selected':'');
+    b.disabled=Boolean(c.is_premium);
+    if(c.image_url){try{const u=new URL(c.image_url);if(u.protocol==='https:'){const img=document.createElement('img');img.src=u.href;img.alt=c.name;img.loading='lazy';b.append(img)}}catch{}}
+    if(!b.querySelector('img')){const f=document.createElement('div');f.className='no-image';f.textContent='🎭';b.append(f)}
+    const name=document.createElement('strong');name.textContent=c.name;b.append(name);
+    const tag=document.createElement('small');tag.textContent=c.is_premium?'Премиум — цена по запросу':(c.category||'Аниматоры');b.append(tag);
+    b.addEventListener('click',()=>{if(state.selected.has(c.id))state.selected.delete(c.id);else if(state.selected.size<10)state.selected.add(c.id);state.time=null;updateUI();refreshSlots()});container.append(b);
+  }
+  $('selectedCount').textContent='Выбрано: '+state.selected.size+' (минимум 2)';
+  const s=currentService();$('basePrice').textContent=s?money(s.base_price_uzs):'Пока недоступно';
+  $('extraPrice').textContent=s?money(s.extra_character_price_uzs):'—';
+  $('total').textContent=s?money(s.base_price_uzs+Math.max(0,state.selected.size-s.included_characters)*s.extra_character_price_uzs):'—';
+  const others=state.services.filter(s=>s.slug!=='standard-60');
+  $('otherServices').hidden=others.length===0;
+  $('serviceList').replaceChildren();for(const o of others){let p=document.createElement('p');p.className='hint';p.textContent=`${o.title} · ${o.price_mode==='on_request'?'Цена по запросу':money(o.base_price_uzs)}`;$('serviceList').append(p)}
+}
+function updateUI(){render();$('submit').disabled=state.busy||!state.time||state.selected.size<2||!currentService();}
+async function refreshSlots(){
+  state.time=null;state.slots=[];$('slots').replaceChildren();updateUI();
+  if(state.selected.size<2){$('slotsMessage').textContent='Выберите минимум двух персонажей.';return;}
+  const day=$('date').value, ids=[...state.selected];
+  if(!day){$('slotsMessage').textContent='Выберите дату.';return;}
+  $('slotsMessage').textContent='Проверяем календарь CRM…';
+  try{
+    const result=await call('slots',{day,character_ids:ids});
+    if(day!==$('date').value||ids.join(',')!==[...state.selected].join(','))return;
+    state.slots=result.slots||[];$('slots').replaceChildren();
+    const allTimes=[];for(let h=10;h<=20;h++){for(const minute of [0,30]){if(h===20&&minute===30)break;allTimes.push(String(h).padStart(2,'0')+':'+String(minute).padStart(2,'0'))}}
+    for(const time of allTimes){
+      const b=document.createElement('button');b.type='button';b.textContent=time;
+      const free=state.slots.includes(time);
+      if(!free)b.classList.add('unavailable');
+      b.addEventListener('click',()=>{
+        if(!free){
+          const mins=t=>Number(t.slice(0,2))*60+Number(t.slice(3,5));
+          const nearest=state.slots.slice().sort((a,b)=>Math.abs(mins(a)-mins(time))-Math.abs(mins(b)-mins(time))).slice(0,3);
+          $('slotsMessage').textContent=nearest.length?`В ${time} герои заняты. Ближайшие свободные варианты: ${nearest.join(', ')}.`:`На ${time} свободного времени нет. Выберите другую дату или других героев.`;
+          return;
+        }
+        state.time=time;for(const x of $('slots').children)x.classList.remove('active');b.classList.add('active');updateUI();
+        $('slotsMessage').textContent=`Выбрано ${time}. Сервер ещё раз проверит время при оформлении.`;
+      });$('slots').append(b)
+    }
+    $('slotsMessage').textContent=state.slots.length?'Выберите удобное время. Зачёркнутые часы заняты; нажмите, чтобы увидеть альтернативы.':'На выбранную дату нет свободных слотов для этих героев. Попробуйте другую дату или персонажей.';
+  }catch(e){$('slotsMessage').textContent=e.message;}
+}
+$('date').addEventListener('change',refreshSlots);
+$('submit').addEventListener('click',async()=>{
+  if(state.busy||!state.time||state.selected.size<2)return;
+  const name=$('name').value.trim(),phone=$('phone').value.trim(),location=$('address').value.trim();
+  if(name.length<2||phone.length<7||location.length<3){message('Заполните имя, телефон и адрес.',true);return;}
+  state.busy=true;updateUI();message('Сохраняем заявку в CRM…');
+  try{
+    const result=await call('book',{request_id:state.requestId,name,phone,location,day:$('date').value,time:state.time,character_ids:[...state.selected]});
+    message(`Заявка № ${result.order_id} принята. Статус: ожидает подтверждения менеджером.`);
+    $('message').classList.add('success');$('submit').textContent='Заявка отправлена';$('submit').disabled=true;
+    // No automatic second booking; close/reopen Mini App to submit another one.
+    state.busy=true;
+  }catch(e){message(e.message,true);state.busy=false;updateUI();if(/время уже занято/i.test(e.message))await refreshSlots()}
+});
+(async()=>{
+  if(!app?.initData){message('Для бронирования откройте Mini App из Telegram-бота.');return}
+  try{const r=await call('catalog');state.characters=r.characters||[];state.services=r.services||[];updateUI();if(state.characters.length<2)message('Каталог ещё не опубликован в CRM. Менеджер должен включить минимум двух персонажей.');else message('Каталог загружен из CRM. Выберите героев и время.');}
+  catch(e){message(e.message,true)}
+})();
+</script>
+</body>
+</html>
