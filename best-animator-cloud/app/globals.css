@@ -49,3 +49,23 @@
 .characterEditFlags input{accent-color:#e82e73;width:16px;height:16px}
 .resourceActions button:disabled{opacity:.45;cursor:not-allowed}
 @media(max-width:560px){.characterPhotoEditor{grid-template-columns:1fr}.characterPhotoEditorImage .characterThumb{height:255px}}
+
+/* Double Bubble Show CRM v0.8 — brand identity (visual-only) */
+.sidebar{background:linear-gradient(175deg,#210a44 0%,#16122e 53%,#101a31 100%)}
+.sidebar .logo{display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 4px 24px;text-align:center}
+.sidebarBrandLogo{display:block;width:min(100%,192px);height:auto;object-fit:contain;filter:drop-shadow(0 3px 9px rgba(230,47,191,.16))}
+.sidebar .logo small{font-size:12px;letter-spacing:.06em;font-weight:700;color:#d7baff}
+.navitem{color:#e0d8f0}
+.navitem:hover{background:rgba(170,80,230,.17)}
+.navitem.active{background:linear-gradient(115deg,rgba(111,48,183,.6),rgba(230,44,148,.28));box-shadow:inset 3px 0 0 #ff65d0;color:#fff}
+.sidebar .sidebottom{color:#b7a3d4}
+.authPage{background:radial-gradient(circle at 83% 15%,#8b2cc6 0%,transparent 35%),linear-gradient(135deg,#240743 0%,#432075 48%,#161229 100%)}
+.authCard{border:1px solid #e7dcf4;box-shadow:0 24px 75px #10082666}
+.authBrand{display:flex;flex-direction:column;align-items:center;gap:5px;color:#68209e;text-align:center;font-weight:700;font-size:12px}
+.authBrandLogo{display:block;width:min(100%,240px);height:auto;object-fit:contain}
+.authCard h1{text-align:center}
+.userAvatar{overflow:hidden;border:2px solid #e5a6ff;background:#3c0e63}
+.userAvatar img{display:block;width:100%;height:100%;object-fit:cover}
+.primary{background:linear-gradient(120deg,#b21ab6,#f336a2)}
+.primary:hover{background:linear-gradient(120deg,#90129a,#d7258a)}
+@media(max-width:700px){.sidebar .logo{align-items:flex-start;padding:0 6px 10px}.sidebarBrandLogo{width:132px}.sidebar .logo small{font-size:10px}.authBrandLogo{width:min(100%,195px)}}
