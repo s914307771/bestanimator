@@ -37,3 +37,15 @@
 .characterCatalogDetails .resourceActions{margin-top:auto;padding-top:3px}
 .characterCatalogDetails .resourceActions button{font-size:11px;padding:7px 8px}
 @media(max-width:700px){.characterCatalogGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.characterThumb{height:190px}.characterCatalogCard{padding:8px}.characterCatalogDetails{padding:8px 2px 2px}}
+
+/* Double Bubble Show CRM — Character Manager v0.8 */
+.characterPhotoEditor{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:start}
+.characterPhotoEditorImage .characterThumb{height:205px}
+.characterPhotoEditorControls{display:grid;gap:10px;min-width:0}
+.characterPhotoEditorControls input[type=file]{width:100%;max-width:100%;font-size:12px;padding:8px;border:1px solid #e0e4ee;border-radius:8px;background:#faf8fc}
+.characterPhotoEditorControls .ghost{justify-self:start;padding:8px 11px}
+.characterEditFlags{display:grid;grid-template-columns:1fr;gap:8px;padding:12px;background:#faf6fd;border-radius:11px;border:1px solid #eee3f4}
+.characterEditFlags label{display:flex;align-items:center;gap:8px;font-size:13px;color:#283452}
+.characterEditFlags input{accent-color:#e82e73;width:16px;height:16px}
+.resourceActions button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:560px){.characterPhotoEditor{grid-template-columns:1fr}.characterPhotoEditorImage .characterThumb{height:255px}}
