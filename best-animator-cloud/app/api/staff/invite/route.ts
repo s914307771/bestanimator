@@ -11,7 +11,7 @@ export async function POST(request:NextRequest){
   ...(!anon?['NEXT_PUBLIC_SUPABASE_ANON_KEY']:[]),
   ...(!serviceKey?['SUPABASE_SERVICE_ROLE_KEY']:[]),
  ];
- if(missing.length){
+ if(missing.length || !url || !anon || !serviceKey){
   console.error('CRM staff invitation configuration missing:', missing.join(', '));
   return NextResponse.json({error:'STAFF_INVITE_NOT_CONFIGURED: '+missing.join(', ')}, {status:503});
  }
