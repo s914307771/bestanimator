@@ -6,7 +6,15 @@ export async function POST(request:NextRequest){
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL;
  const anon=process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
  const serviceKey=process.env.SUPABASE_SERVICE_ROLE_KEY;
- if(!url||!anon||!serviceKey)return NextResponse.json({error:'STAFF_INVITE_NOT_CONFIGURED'}, {status:503});
+ const missing=[
+  ...(!url?['NEXT_PUBLIC_SUPABASE_URL']:[]),
+  ...(!anon?['NEXT_PUBLIC_SUPABASE_ANON_KEY']:[]),
+  ...(!serviceKey?['SUPABASE_SERVICE_ROLE_KEY']:[]),
+ ];
+ if(missing.length){
+  console.error('CRM staff invitation configuration missing:', missing.join(', '));
+  return NextResponse.json({error:'STAFF_INVITE_NOT_CONFIGURED: '+missing.join(', ')}, {status:503});
+ }
  const token=request.headers.get('authorization')?.match(/^Bearer (.+)$/i)?.[1];
  if(!token)return NextResponse.json({error:'UNAUTHORIZED'},{status:401});
  const publicClient=createClient(url,anon,{auth:{persistSession:false,autoRefreshToken:false}});
