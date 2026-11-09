@@ -16,3 +16,56 @@
 
 /* v0.7 accounting */
 .expenseActions{display:flex;gap:8px;flex-wrap:wrap}.expenseActions button{background:#f6f7fa;border:1px solid #e3e8f0;border-radius:7px;padding:6px 10px;color:#34445f}.field textarea{padding:11px 12px;border:1px solid #dae0e8;border-radius:8px;min-height:82px;resize:vertical;font:inherit}.stats.compact .kpi strong{font-size:18px}.detailGrid+.detailItem{margin-top:8px}
+
+
+/* Double Bubble Show — карточки персонажей с фото (CRM) */
+.characterCatalogGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:16px}
+.characterCatalogCard{padding:10px;display:flex;flex-direction:column;min-width:0;overflow:hidden;box-shadow:0 7px 20px rgba(31,41,55,.035)}
+.characterThumb{height:236px;width:100%;display:flex;align-items:center;justify-content:center;background:#f4ebfc;border:1px solid #eee5f5;border-radius:11px;overflow:hidden}
+.characterThumb img{display:block;width:100%;height:100%;object-fit:contain;object-position:center center}
+.characterNoPhoto{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#806a91;text-align:center}
+.characterNoPhoto span{font-size:37px}.characterNoPhoto small{font-size:11px}
+.characterCatalogDetails{display:flex;flex-direction:column;flex:1;gap:9px;padding:10px 4px 4px}
+.characterCatalogDetails .resourceHead{gap:7px;align-items:flex-start}
+.characterCatalogDetails .resourceHead strong{font-size:14px;line-height:1.25;overflow-wrap:anywhere}
+.characterCategory{color:#806394;font-size:12px;line-height:1.3}
+.characterBadges{display:flex;flex-wrap:wrap;gap:6px}
+.characterPublished,.characterHidden,.characterPremium{display:inline-block;font-size:10px;line-height:1.25;padding:4px 7px;border-radius:999px;font-weight:600}
+.characterPublished{background:#e8f8ef;color:#18724b}.characterHidden{background:#f1f2f5;color:#6d7687}.characterPremium{background:#fff4dc;color:#986417}
+.characterCatalogDetails p{margin:0;color:#6d7990;font-size:11px;line-height:1.45}
+.characterCatalogDetails .characterNotes{max-height:45px;overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3}
+.characterCatalogDetails .resourceActions{margin-top:auto;padding-top:3px}
+.characterCatalogDetails .resourceActions button{font-size:11px;padding:7px 8px}
+@media(max-width:700px){.characterCatalogGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.characterThumb{height:190px}.characterCatalogCard{padding:8px}.characterCatalogDetails{padding:8px 2px 2px}}
+
+/* Double Bubble Show CRM — Character Manager v0.8 */
+.characterPhotoEditor{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:start}
+.characterPhotoEditorImage .characterThumb{height:205px}
+.characterPhotoEditorControls{display:grid;gap:10px;min-width:0}
+.characterPhotoEditorControls input[type=file]{width:100%;max-width:100%;font-size:12px;padding:8px;border:1px solid #e0e4ee;border-radius:8px;background:#faf8fc}
+.characterPhotoEditorControls .ghost{justify-self:start;padding:8px 11px}
+.characterEditFlags{display:grid;grid-template-columns:1fr;gap:8px;padding:12px;background:#faf6fd;border-radius:11px;border:1px solid #eee3f4}
+.characterEditFlags label{display:flex;align-items:center;gap:8px;font-size:13px;color:#283452}
+.characterEditFlags input{accent-color:#e82e73;width:16px;height:16px}
+.resourceActions button:disabled{opacity:.45;cursor:not-allowed}
+@media(max-width:560px){.characterPhotoEditor{grid-template-columns:1fr}.characterPhotoEditorImage .characterThumb{height:255px}}
+
+/* Double Bubble Show CRM v0.8 — brand identity (visual-only) */
+.sidebar{background:linear-gradient(175deg,#210a44 0%,#16122e 53%,#101a31 100%)}
+.sidebar .logo{display:flex;flex-direction:column;align-items:center;gap:2px;padding:0 4px 24px;text-align:center}
+.sidebarBrandLogo{display:block;width:min(100%,192px);height:auto;object-fit:contain;filter:drop-shadow(0 3px 9px rgba(230,47,191,.16))}
+.sidebar .logo small{font-size:12px;letter-spacing:.06em;font-weight:700;color:#d7baff}
+.navitem{color:#e0d8f0}
+.navitem:hover{background:rgba(170,80,230,.17)}
+.navitem.active{background:linear-gradient(115deg,rgba(111,48,183,.6),rgba(230,44,148,.28));box-shadow:inset 3px 0 0 #ff65d0;color:#fff}
+.sidebar .sidebottom{color:#b7a3d4}
+.authPage{background:radial-gradient(circle at 83% 15%,#8b2cc6 0%,transparent 35%),linear-gradient(135deg,#240743 0%,#432075 48%,#161229 100%)}
+.authCard{border:1px solid #e7dcf4;box-shadow:0 24px 75px #10082666}
+.authBrand{display:flex;flex-direction:column;align-items:center;gap:5px;color:#68209e;text-align:center;font-weight:700;font-size:12px}
+.authBrandLogo{display:block;width:min(100%,240px);height:auto;object-fit:contain}
+.authCard h1{text-align:center}
+.userAvatar{overflow:hidden;border:2px solid #e5a6ff;background:#3c0e63}
+.userAvatar img{display:block;width:100%;height:100%;object-fit:cover}
+.primary{background:linear-gradient(120deg,#b21ab6,#f336a2)}
+.primary:hover{background:linear-gradient(120deg,#90129a,#d7258a)}
+@media(max-width:700px){.sidebar .logo{align-items:flex-start;padding:0 6px 10px}.sidebarBrandLogo{width:132px}.sidebar .logo small{font-size:10px}.authBrandLogo{width:min(100%,195px)}}
