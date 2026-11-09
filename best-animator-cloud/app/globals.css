@@ -69,3 +69,21 @@
 .primary{background:linear-gradient(120deg,#b21ab6,#f336a2)}
 .primary:hover{background:linear-gradient(120deg,#90129a,#d7258a)}
 @media(max-width:700px){.sidebar .logo{align-items:flex-start;padding:0 6px 10px}.sidebarBrandLogo{width:132px}.sidebar .logo small{font-size:10px}.authBrandLogo{width:min(100%,195px)}}
+
+/* Double Bubble Show CRM v0.9 — staff permissions, personal cabinet and execution */
+.staffInvite{max-width:580px;display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0 30px;padding:20px;border-radius:15px;background:#f8f2fd;border:1px solid #eadcf5}
+.staffInvite h4,.staffInvite .hint{grid-column:1/-1;margin:0}
+.staffInvite button{justify-self:start}
+.staffCard{border:1px solid #e7e0f0;padding:18px;border-radius:15px;margin:12px 0;background:white}
+.permissionsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:9px;margin-top:14px}
+.permissionItem{display:flex;gap:11px;align-items:flex-start;padding:11px 12px;border-radius:10px;border:1px solid #e8e1f4;background:#fdfaff;color:#38224e;font-size:12px;line-height:1.45;cursor:pointer}
+.permissionItem input{accent-color:#bd21a5;width:17px;height:17px;flex-shrink:0}
+.cabinetTasks,.executionList{display:grid;gap:10px}
+.cabinetTask,.executionRow{display:flex;justify-content:space-between;gap:18px;align-items:center;border:1px solid #eee8f3;border-radius:12px;padding:14px 16px;background:#fff}
+.cabinetTask div,.executionRow>div:first-child{display:grid;gap:5px;min-width:200px}
+.cabinetTask small,.executionRow small{display:block;color:#78829a;font-size:12px}
+.cabinetDivider{margin:26px 0;border:0;border-top:1px solid #ece5f3}
+.executionControls{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.executionControls select,.executionControls input{padding:9px 10px;border:1px solid #ded7ea;border-radius:9px;font:inherit;max-width:225px}
+.executionControls input{min-width:180px;flex:1}
+@media(max-width:760px){.staffInvite{grid-template-columns:1fr}.staffInvite h4,.staffInvite .hint{grid-column:auto}.cabinetTask,.executionRow{align-items:stretch;flex-direction:column}.executionControls{justify-content:flex-start}.executionControls select,.executionControls input{max-width:100%;width:100%}}
