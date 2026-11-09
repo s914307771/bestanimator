@@ -54,7 +54,7 @@ Deno.serve(async (req: Request) => {
   const name = typeof payload.name === "string" ? payload.name.trim() : "";
   const requestedRedirect = typeof payload.redirectTo === "string"
     ? payload.redirectTo.trim() : "";
-  if (!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email) ||
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
       email.length > 254 || name.length < 2 || name.length > 80)
     return json(400, { error: "INVALID_EMAIL_OR_NAME" });
 
