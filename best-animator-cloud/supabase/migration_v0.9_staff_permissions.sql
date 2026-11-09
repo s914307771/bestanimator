@@ -92,62 +92,62 @@ ON CONFLICT DO NOTHING;
 
 -- RLS: existing policies only check owner/manager; RESTRICTIVE policies enforce individual permissions.
 DROP POLICY IF EXISTS orders_insert_v09 ON public.orders;
-CREATE POLICY orders_insert_v09 AS RESTRICTIVE ON public.orders FOR INSERT TO authenticated
+CREATE POLICY orders_insert_v09 ON public.orders AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((SELECT public.crm_can('orders.create')));
 DROP POLICY IF EXISTS orders_update_v09 ON public.orders;
-CREATE POLICY orders_update_v09 AS RESTRICTIVE ON public.orders FOR UPDATE TO authenticated
+CREATE POLICY orders_update_v09 ON public.orders AS RESTRICTIVE FOR UPDATE TO authenticated
  USING ((SELECT public.crm_can('orders.update_status')))
  WITH CHECK ((SELECT public.crm_can('orders.update_status')));
 DROP POLICY IF EXISTS clients_insert_v09 ON public.clients;
-CREATE POLICY clients_insert_v09 AS RESTRICTIVE ON public.clients FOR INSERT TO authenticated
+CREATE POLICY clients_insert_v09 ON public.clients AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((SELECT public.crm_can('orders.create')));
 DROP POLICY IF EXISTS clients_update_v09 ON public.clients;
-CREATE POLICY clients_update_v09 AS RESTRICTIVE ON public.clients FOR UPDATE TO authenticated
+CREATE POLICY clients_update_v09 ON public.clients AS RESTRICTIVE FOR UPDATE TO authenticated
  USING ((SELECT public.crm_can('orders.create')))
  WITH CHECK ((SELECT public.crm_can('orders.create')));
 DROP POLICY IF EXISTS characters_insert_v09 ON public.characters;
-CREATE POLICY characters_insert_v09 AS RESTRICTIVE ON public.characters FOR INSERT TO authenticated
+CREATE POLICY characters_insert_v09 ON public.characters AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((SELECT public.crm_can('catalog.manage')));
 DROP POLICY IF EXISTS characters_update_v09 ON public.characters;
-CREATE POLICY characters_update_v09 AS RESTRICTIVE ON public.characters FOR UPDATE TO authenticated
+CREATE POLICY characters_update_v09 ON public.characters AS RESTRICTIVE FOR UPDATE TO authenticated
  USING ((SELECT public.crm_can('catalog.manage')))
  WITH CHECK ((SELECT public.crm_can('catalog.manage')));
 DROP POLICY IF EXISTS teams_insert_v09 ON public.teams;
-CREATE POLICY teams_insert_v09 AS RESTRICTIVE ON public.teams FOR INSERT TO authenticated
+CREATE POLICY teams_insert_v09 ON public.teams AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((SELECT public.crm_can('teams.manage')));
 DROP POLICY IF EXISTS teams_update_v09 ON public.teams;
-CREATE POLICY teams_update_v09 AS RESTRICTIVE ON public.teams FOR UPDATE TO authenticated
+CREATE POLICY teams_update_v09 ON public.teams AS RESTRICTIVE FOR UPDATE TO authenticated
  USING ((SELECT public.crm_can('teams.manage')))
  WITH CHECK ((SELECT public.crm_can('teams.manage')));
 DROP POLICY IF EXISTS order_characters_insert_v09 ON public.order_characters;
-CREATE POLICY order_characters_insert_v09 AS RESTRICTIVE ON public.order_characters FOR INSERT TO authenticated
+CREATE POLICY order_characters_insert_v09 ON public.order_characters AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((SELECT public.crm_can('orders.create')));
 DROP POLICY IF EXISTS recipients_insert_v09 ON public.telegram_recipients;
-CREATE POLICY recipients_insert_v09 AS RESTRICTIVE ON public.telegram_recipients FOR INSERT TO authenticated
+CREATE POLICY recipients_insert_v09 ON public.telegram_recipients AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((SELECT public.crm_can('telegram.manage')));
 DROP POLICY IF EXISTS recipients_update_v09 ON public.telegram_recipients;
-CREATE POLICY recipients_update_v09 AS RESTRICTIVE ON public.telegram_recipients FOR UPDATE TO authenticated
+CREATE POLICY recipients_update_v09 ON public.telegram_recipients AS RESTRICTIVE FOR UPDATE TO authenticated
  USING ((SELECT public.crm_can('telegram.manage')))
  WITH CHECK ((SELECT public.crm_can('telegram.manage')));
 DROP POLICY IF EXISTS payments_read_v09 ON public.payments;
-CREATE POLICY payments_read_v09 AS RESTRICTIVE ON public.payments FOR SELECT TO authenticated
+CREATE POLICY payments_read_v09 ON public.payments AS RESTRICTIVE FOR SELECT TO authenticated
  USING ((SELECT public.crm_can('finance.view_payments')));
 DROP POLICY IF EXISTS payments_insert_v09 ON public.payments;
-CREATE POLICY payments_insert_v09 AS RESTRICTIVE ON public.payments FOR INSERT TO authenticated
+CREATE POLICY payments_insert_v09 ON public.payments AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((kind='payment' AND (SELECT public.crm_can('finance.record_payment')))
    OR (kind='refund' AND (SELECT public.crm_can('finance.record_refund'))));
 DROP POLICY IF EXISTS expenses_read_v09 ON public.expenses;
-CREATE POLICY expenses_read_v09 AS RESTRICTIVE ON public.expenses FOR SELECT TO authenticated
+CREATE POLICY expenses_read_v09 ON public.expenses AS RESTRICTIVE FOR SELECT TO authenticated
  USING ((SELECT public.crm_can('finance.view_expenses')));
 DROP POLICY IF EXISTS expenses_insert_v09 ON public.expenses;
-CREATE POLICY expenses_insert_v09 AS RESTRICTIVE ON public.expenses FOR INSERT TO authenticated
+CREATE POLICY expenses_insert_v09 ON public.expenses AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK ((SELECT public.crm_can('finance.create_expense')));
 DROP POLICY IF EXISTS expenses_update_v09 ON public.expenses;
-CREATE POLICY expenses_update_v09 AS RESTRICTIVE ON public.expenses FOR UPDATE TO authenticated
+CREATE POLICY expenses_update_v09 ON public.expenses AS RESTRICTIVE FOR UPDATE TO authenticated
  USING ((SELECT public.crm_can('finance.edit_expense')) OR (SELECT public.crm_can('finance.void_expense')))
  WITH CHECK ((SELECT public.crm_can('finance.edit_expense')) OR (SELECT public.crm_can('finance.void_expense')));
 DROP POLICY IF EXISTS audit_read_v09 ON public.financial_audit;
-CREATE POLICY audit_read_v09 AS RESTRICTIVE ON public.financial_audit FOR SELECT TO authenticated
+CREATE POLICY audit_read_v09 ON public.financial_audit AS RESTRICTIVE FOR SELECT TO authenticated
  USING ((SELECT public.crm_can('audit.view')));
 
 -- Server-side ledger consistency and attribution. Serialization on the order row prevents concurrent overpayment.
@@ -313,10 +313,10 @@ CREATE POLICY execution_audit_read_v09 ON public.order_execution_audit FOR SELEC
 
 -- Restrict Storage write access for character cards when the owner's catalog permission is revoked.
 DROP POLICY IF EXISTS dbs_photo_write_restrict_v09 ON storage.objects;
-CREATE POLICY dbs_photo_write_restrict_v09 AS RESTRICTIVE ON storage.objects FOR INSERT TO authenticated
+CREATE POLICY dbs_photo_write_restrict_v09 ON storage.objects AS RESTRICTIVE FOR INSERT TO authenticated
  WITH CHECK (bucket_id <> 'dbs-character-cards' OR (SELECT public.crm_can('catalog.manage')));
 DROP POLICY IF EXISTS dbs_photo_delete_restrict_v09 ON storage.objects;
-CREATE POLICY dbs_photo_delete_restrict_v09 AS RESTRICTIVE ON storage.objects FOR DELETE TO authenticated
+CREATE POLICY dbs_photo_delete_restrict_v09 ON storage.objects AS RESTRICTIVE FOR DELETE TO authenticated
  USING (bucket_id <> 'dbs-character-cards' OR (SELECT public.crm_can('catalog.manage')));
 
 COMMIT;
