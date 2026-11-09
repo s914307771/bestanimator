@@ -20,9 +20,24 @@ export async function POST(request:NextRequest){
  const publicClient=createClient(url,anon,{auth:{persistSession:false,autoRefreshToken:false}});
  const {data:{user},error:authError}=await publicClient.auth.getUser(token);
  if(authError||!user)return NextResponse.json({error:'UNAUTHORIZED'},{status:401});
+ // Check owner authority using the caller's verified JWT (subject to staff_profiles RLS).
+ const callerDb=createClient(url,anon,{
+  global:{headers:{Authorization:`Bearer ${token}`}},
+  auth:{persistSession:false,autoRefreshToken:false}
+ });
+ const {data:profile,error:roleError}=await callerDb.from('staff_profiles').select('role').eq('user_id',user.id).maybeSingle();
+ if(roleError){
+  console.error('STAFF_OWNER_PROFILE_LOOKUP_FAILED',roleError.code,roleError.message);
+  return NextResponse.json({error:'STAFF_OWNER_PROFILE_LOOKUP_FAILED'},{status:503});
+ }
+ if(profile?.role!=='owner')return NextResponse.json({error:'FORBIDDEN_OWNER_ONLY'},{status:403});
+ // Administrative key must really belong to this Supabase project.
  const admin=createClient(url,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}});
- const {data:profile,error:roleError}=await admin.from('staff_profiles').select('role').eq('user_id',user.id).maybeSingle();
- if(roleError||profile?.role!=='owner')return NextResponse.json({error:'FORBIDDEN_OWNER_ONLY'},{status:403});
+ const {data:adminProfile,error:adminError}=await admin.from('staff_profiles').select('user_id').eq('user_id',user.id).maybeSingle();
+ if(adminError||adminProfile?.user_id!==user.id){
+  console.error('STAFF_INVITE_ADMIN_ACCESS_ERROR',adminError?.code,adminError?.message||'Profile inaccessible');
+  return NextResponse.json({error:'STAFF_INVITE_SERVICE_ROLE_INVALID'},{status:503});
+ }
  let body:unknown;
  try{body=await request.json();}catch{return NextResponse.json({error:'INVALID_JSON'},{status:400})}
  if(!body||typeof body!=='object')return NextResponse.json({error:'INVALID_PAYLOAD'},{status:400});
