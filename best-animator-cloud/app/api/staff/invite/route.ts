@@ -5,8 +5,12 @@ import {NextRequest, NextResponse} from 'next/server';
 export async function POST(request: NextRequest) {
  const projectUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
- const redirectTo = process.env.CRM_PUBLIC_URL;
- if (!projectUrl || !anonKey || !redirectTo) {
+ // Always use a stable, project-owned redirect. Preview Vercel deployment URLs
+ // change on each build and must never be used for invitation links.
+ const redirectTo = process.env.VERCEL_ENV === 'production'
+  ? 'https://best-animator-cloud.vercel.app/'
+  : 'https://best-animator-cloud-git-feature-owner-manager-f7bf33-s914307771.vercel.app/';
+ if (!projectUrl || !anonKey) {
   return NextResponse.json({error:'STAFF_INVITE_NOT_CONFIGURED'}, {status:503});
  }
  const authorization = request.headers.get('authorization') || '';
